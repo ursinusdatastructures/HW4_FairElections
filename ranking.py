@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def load_rankings(filename="rankings.txt"):
+def load_rankings(filename="preferences.csv"):
     """
     Load all student rankings from a file
 
@@ -14,30 +14,25 @@ def load_rankings(filename="rankings.txt"):
     
     Returns
     -------
-    superheros: A list of superheros in alphabetical order
+    animals: A list of animals in alphabetical order
     raters: dictionary( 
         string (Ranker's name): list (This person's ranking as a list of numbers
-                                      corresponding to the indices in superheros)
+                                      corresponding to the indices in animals)
     )
     """
-    superhero_to_num = {}
     raters = {}
-    superheros = []
     fin = open(filename)
-    lines = [L.rstrip() for L in fin.readlines()]
+    lines = fin.readlines()
     fin.close()
-    i = 0
-    N = 9
-    while (i+1)*N <= len(lines):
-        rater = lines[i*N]
-        rankings = lines[i*N+1:(i+1)*N]
-        if len(superhero_to_num) == 0:
-            superheros = sorted(rankings)
-            for k, name in enumerate(superheros):
-                superhero_to_num[name] = k
-        raters[rater] = [superhero_to_num[superhero] for superhero in rankings]
-        i += 1
-    return superheros, raters
+    animals = [s.rstrip().replace("\"", "") for s in lines[0].split(",")[1::]]
+    for line in lines[1::]:
+        fields = line.split(",")
+        rater = fields[0].replace("\"", "")
+        fields = [int(f) for f in fields[1::]]
+        raters[rater] = [0]*len(fields)
+        for i, x in enumerate(fields):
+            raters[rater][x-1] = i
+    return animals, raters
 
 
 def plot_mds_distances(raters, random_state=0):
@@ -50,7 +45,7 @@ def plot_mds_distances(raters, random_state=0):
     ----------
     raters: dictionary( 
         string (Ranker's name): list (This person's ranking as a list of numbers
-                                      corresponding to the indices in superheros)
+                                      corresponding to the indices in animals)
     random_state: int
         A seed to determine which random isometry to use for MDS
     """
