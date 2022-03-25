@@ -66,22 +66,22 @@ def plot_mds_distances(raters, random_state=0):
     plt.title("MDS Projected Kendall-Tau Distances")
 
 
-def kendall_tau(r1, r2):
+def kendall_tau(p1, p2):
     """
     An O(N log N) algorithm for computing the Kendall-Tau Distance
 
     Parameters
     ----------
-    r1: List of N elements
+    p1: List of N elements
         A permutation of the elements 0, 1, 2, ..., N corresponding 
         to the first rating
-    r2: List of N elements
+    p2: List of N elements
         A permutation of the elements 0, 1, 2, .., N corresponding to 
         the second rating
     
     Returns
     -------
-    The Kendall-Tau distance between r1 and r2
+    The Kendall-Tau distance between permutation p1 and p2
     """
     pass ## TODO: Get rid of pass and fill this in
 
