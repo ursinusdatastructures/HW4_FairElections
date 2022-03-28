@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def load_rankings(filename="preferences.csv"):
+def load_permutations(filename="preferences.csv"):
     """
-    Load all student rankings from a file
+    Load all student permutations from a file
 
     Parameters
     ----------
@@ -16,7 +16,7 @@ def load_rankings(filename="preferences.csv"):
     -------
     animals: A list of animals in alphabetical order
     raters: dictionary( 
-        string (Ranker's name): list (This person's ranking as a list of numbers
+        string (Ranker's name): list (This person's permutation as a list of numbers
                                       corresponding to the indices in animals)
     )
     """
@@ -44,7 +44,7 @@ def plot_mds_distances(raters, random_state=0):
     Parameters
     ----------
     raters: dictionary( 
-        string (Ranker's name): list (This person's ranking as a list of numbers
+        string (Ranker's name): list (This person's permutation as a list of numbers
                                       corresponding to the indices in animals)
     random_state: int
         A seed to determine which random isometry to use for MDS
