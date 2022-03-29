@@ -35,6 +35,31 @@ def load_permutations(filename="preferences.csv"):
     return animals, raters
 
 
+def mds(D):
+    """
+    Perform classic multidimensional scaling
+    See notes here:
+    http://www.cs.umd.edu/~djacobs/CMSC828/MDSexplain.pdf
+
+    Parameters
+    ----------
+    D: ndarray(N, N)
+        A matrix of pairwise similarities
+    
+    Return
+    ------
+    Y: ndarray(N, N)
+        MDS projection, with columns in order of variance
+        explained
+    """
+    from numpy import linalg
+    N = D.shape[0]
+    H = np.eye(N) - np.ones((N, N))/N
+    B = -0.5*(H.dot((D*D).dot(H)))
+    U, s, V = linalg.svd(B)
+    Y = np.sqrt(s[None, :])*U
+    return Y
+
 def plot_mds_distances(raters, random_state=0):
     """
     Compute all pairwise Kendall-Tau distances and plot a dimension 
@@ -49,7 +74,6 @@ def plot_mds_distances(raters, random_state=0):
     random_state: int
         A seed to determine which random isometry to use for MDS
     """
-    from sklearn.manifold import MDS
     N = len(raters)
     D = np.zeros((N, N))
     rlist = [r for r in raters]
@@ -58,8 +82,7 @@ def plot_mds_distances(raters, random_state=0):
             rater2 = rlist[j]
             D[i, j] = kendall_tau(raters[rater1], raters[rater2])
     D = D+D.T
-    embedding = MDS(n_components=2, dissimilarity='precomputed', random_state=random_state)
-    X = embedding.fit_transform(D)
+    X = mds(D)
     plt.scatter(X[:, 0], X[:, 1])
     for i, r in enumerate(rlist):
         plt.text(X[i, 0], X[i, 1], r)
