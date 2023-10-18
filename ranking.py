@@ -14,17 +14,17 @@ def load_permutations(filename="preferences.csv"):
     
     Returns
     -------
-    animals: A list of animals in alphabetical order
+    stars: A list of stars in alphabetical order
     raters: dictionary( 
         string (Ranker's name): list (This person's permutation as a list of numbers
-                                      corresponding to the indices in animals)
+                                      corresponding to the indices in stars)
     )
     """
     raters = {}
     fin = open(filename)
     lines = fin.readlines()
     fin.close()
-    animals = [s.rstrip().replace("\"", "") for s in lines[0].split(",")[1::]]
+    stars = [s.rstrip().replace("\"", "") for s in lines[0].split(",")[1::]]
     for line in lines[1::]:
         fields = line.split(",")
         rater = fields[0].replace("\"", "")
@@ -32,7 +32,7 @@ def load_permutations(filename="preferences.csv"):
         raters[rater] = [0]*len(fields)
         for i, x in enumerate(fields):
             raters[rater][x-1] = i
-    return animals, raters
+    return stars, raters
 
 
 def mds(D):
@@ -91,22 +91,22 @@ def plot_mds_distances(raters, random_state=0):
 
 def kendall_tau(p1, p2):
     """
-    An O(N log N) algorithm for computing the Kendall-Tau Distance
+    An O(N^2) algorithm for computing the Kendall-Tau Distance
 
     Parameters
     ----------
     p1: List of N elements
-        A permutation of the elements 0, 1, 2, ..., N corresponding 
+        A permutation of the elements 0, 1, 2, ..., N-1 corresponding 
         to the first rating
     p2: List of N elements
-        A permutation of the elements 0, 1, 2, .., N corresponding to 
+        A permutation of the elements 0, 1, 2, .., N-1 corresponding to 
         the second rating
     
     Returns
     -------
     The Kendall-Tau distance between permutation p1 and p2
     """
-    pass ## TODO: Get rid of pass and fill this in
+    return 0 ## TODO: This is a dummy value!
 
 
 ## TODO: Fill everything else in!
